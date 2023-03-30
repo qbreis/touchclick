@@ -1,10 +1,18 @@
 .main {
+  background-color: #ffffff;
+  margin: 20px;
+  border-radius: 20px;
+  height: calc(100vh - 40px);
+  position: relative;
+  overflow: hidden;
+  /*
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
   padding: 6rem;
   min-height: 100vh;
+  */
 }
 
 .description {
