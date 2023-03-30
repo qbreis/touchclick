@@ -1,5 +1,4 @@
 import Head from 'next/head'
-import Image from 'next/image'
 import { Inter } from 'next/font/google'
 import styles from '@/styles/Home.module.css'
 
@@ -24,8 +23,8 @@ export default function Home() {
   return (
     <>
       <Head>
-        <title>Z</title>
-        <meta name="description" content="zzzs" />
+        <title>Click touch around the screen</title>
+        <meta name="description" content="Testing UI transitional effects on touch or click around the screen." />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
