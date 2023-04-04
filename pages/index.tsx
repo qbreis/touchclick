@@ -1,14 +1,17 @@
-import Head from 'next/head'
-import { Inter } from 'next/font/google'
-import styles from '@/styles/Home.module.css'
+import Head from 'next/head';
+import { Inter } from 'next/font/google';
+import styles from '@/styles/Home.module.css';
 
 import { useState } from 'react';
 import Sprites from '../components/Sprites';
 
 const inter = Inter({ subsets: ['latin'] });
 
-import { timeToPercentage, comparePercentages } from '../includes/functions'
-
+import {
+  timeToPercentage,
+  comparePercentages,
+  comparePercentagesWithProps,
+} from '../includes/functions';
 
 /*
 I want to save in Array getTimes lapses between key presses in milliseconds:
@@ -86,31 +89,35 @@ export default function Home() {
     lastGetTime = getTime; // on first click do nothing but save new getTime value
     console.log('getTimes', getTimes);
 
-    sequences.forEach(function (value, index) { // for each sequence object
+    sequences.forEach(function (value, index) {
+      // for each sequence object
       console.log(value.sequence.length, getTimes.length);
-      if(value.sequence.length <= getTimes.length){ // only if sequence length is less or equal to lapses saved until now
-        console.log('search sequence into last getTimes ('+index+')');
+      if (value.sequence.length <= getTimes.length) {
+        // only if sequence length is less or equal to lapses saved until now
+        console.log('search sequence into last getTimes (' + index + ')');
         console.log(
           value.sequence, // sequence with each vlaue correesponding to lapse in percentage
           getTimes.slice(getTimes.length - value.sequence.length), // last lapses (in milliseconds) saved with same length than sequence
-          timeToPercentage( // will return last lapses saved with same length than sequence IN PERCENTAGE
+          timeToPercentage(
+            // will return last lapses saved with same length than sequence IN PERCENTAGE
             getTimes.slice(getTimes.length - value.sequence.length) // last lapses (in milliseconds) saved with same length than sequence
           )
-          
         );
 
-        if(
-            comparePercentages(
-              timeToPercentage( // will return last lapses saved with same length than sequence IN PERCENTAGE
+        if (
+          comparePercentagesWithProps({
+            array1: timeToPercentage(
+              // will return last lapses saved with same length than sequence IN PERCENTAGE
               getTimes.slice(getTimes.length - value.sequence.length) // last lapses (in milliseconds) saved with same length than sequence
             ),
-            value.sequence // sequence with each vlaue correesponding to lapse in percentage
-          )
-        )console.log('xxx--- COINCIDENCE ---xxx');else console.log('NOT COINCIDENCE');
+            array2: value.sequence, // sequence with each vlaue correesponding to lapse in percentage
+          })
+        )
+          console.log('xxx--- COINCIDENCE ---xxx');
+        else console.log('NOT COINCIDENCE');
         console.log('------------------------------');
       }
     });
-
 
     setSprites([
       ...sprites,
@@ -122,7 +129,10 @@ export default function Home() {
     <>
       <Head>
         <title>Click touch around the screen</title>
-        <meta name="description" content="Testing UI transitional effects on touch or click around the screen." />
+        <meta
+          name="description"
+          content="Testing UI transitional effects on touch or click around the screen."
+        />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
@@ -130,5 +140,5 @@ export default function Home() {
         <Sprites sprites={sprites} handleClick={handleClick} />
       </main>
     </>
-  )
+  );
 }
