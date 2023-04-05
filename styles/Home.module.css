@@ -2,7 +2,7 @@
   background-color: #ffffff;
   margin: 20px;
   border-radius: 20px;
-  height: calc(100vh - 40px);
+  height: calc(100vh - 40px - 50px); /* being 50px height of Nav Component */
   position: relative;
   overflow: hidden;
   /*
