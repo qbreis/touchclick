@@ -1,5 +1,6 @@
 import Link from 'next/link';
-export default function Nav({ }) {
+
+export default function Nav({ onClickRecording }: any) {
     return (
         <nav className="nav">
             <ul>
@@ -9,7 +10,14 @@ export default function Nav({ }) {
                 <li>
                     <Link href="/about">About</Link>
                 </li>
+                {onClickRecording && (
+                    <li>
+                        <Link href="" onClick={onClickRecording}>
+                            Record
+                        </Link>
+                    </li>
+                )}
             </ul>
         </nav>
     );
-};
+}

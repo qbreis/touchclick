@@ -7,7 +7,9 @@ import Sprites from '../components/Sprites';
 
 const inter = Inter({ subsets: ['latin'] });
 
-import { timeToPercentage, comparePercentages } from '../includes/functions';
+import { timeToPercentage, comparePercentages, compareSequences } from '../includes/functions';
+
+import Nav from '../components/Nav';
 
 /*
 I want to save in Array getTimes lapses between key presses in milliseconds:
@@ -60,57 +62,44 @@ let getTimes: any = []; // I want to save in Array getTimes lapses between key p
 let lastGetTime = 0; // I will need last time for click event
 
 export default function Home() {
+
+    const [mode, setMode] = useState('watching');
+
+
     const [sprites, setSprites] = useState<
         { clientX: string; clientY: string }[]
     >([]);
 
     const handleClick = (event: any) => {
+
+        console.log('mode', mode);
+        
         //console.log(event);
         const getTime = new Date().getTime(); // new getTime value
         if (lastGetTime) {
             getTimes.push(getTime - lastGetTime); // push in the lapse between last getTime and new getTime
         }
         lastGetTime = getTime; // on first click do nothing but save new getTime value
-        console.log('getTimes', getTimes);
+        //console.log('getTimes', getTimes);
 
-        sequences.forEach(function (value, index) {
-            // for each sequence object
-            console.log(value.sequence.length, getTimes.length);
-            if (value.sequence.length <= getTimes.length) {
-                // only if sequence length is less or equal to lapses saved until now
-                console.log(
-                    'search sequence into last getTimes (' + index + ')'
-                );
-                console.log(
-                    value.sequence, // sequence with each vlaue correesponding to lapse in percentage
-                    getTimes.slice(getTimes.length - value.sequence.length), // last lapses (in milliseconds) saved with same length than sequence
-                    timeToPercentage(
-                        // will return last lapses saved with same length than sequence IN PERCENTAGE
-                        getTimes.slice(getTimes.length - value.sequence.length) // last lapses (in milliseconds) saved with same length than sequence
-                    )
-                );
-
-                if (
-                    comparePercentages({
-                        array1: timeToPercentage(
-                            // will return last lapses saved with same length than sequence IN PERCENTAGE
-                            getTimes.slice(
-                                getTimes.length - value.sequence.length
-                            ) // last lapses (in milliseconds) saved with same length than sequence
-                        ),
-                        array2: value.sequence // sequence with each vlaue correesponding to lapse in percentage
-                    })
-                )
-                    console.log('xxx--- COINCIDENCE ---xxx');
-                else console.log('NOT COINCIDENCE');
-                console.log('------------------------------');
-            }
+        const compareSequencesResult = compareSequences({
+            sequences: sequences,
+            getTimes: getTimes
         });
+
+        if(compareSequencesResult) console.log('compareSequencesResult', compareSequencesResult);
 
         setSprites([
             ...sprites,
             { clientX: event.clientX, clientY: event.clientY }
         ]);
+    };
+
+    const handleClickOnRecording = (event: any) => {
+        event.stopPropagation();
+        console.log('recording');
+        setMode('recording');
+        
     };
 
     return (
@@ -127,9 +116,9 @@ export default function Home() {
                 />
                 <link rel="icon" href="/favicon.ico" />
             </Head>
-
+            <p>mode: {mode}</p>
             <Sprites sprites={sprites} handleClick={handleClick} />
-            
+            <Nav onClickRecording={handleClickOnRecording} />
         </>
     );
 }
