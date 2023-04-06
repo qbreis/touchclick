@@ -51,7 +51,7 @@ export function compareSequences(props: any) {
     props.sequences.forEach(function (value: any, index: any) {
         if (!result) {
             // for each sequence object
-            //console.log(value.sequence.length, props.getTimes.length);
+            console.log(value.sequence.length, props.getTimes.length);
             if (value.sequence.length <= props.getTimes.length) {
                 // only if sequence length is less or equal to lapses saved until now
                 /*

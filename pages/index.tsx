@@ -7,7 +7,11 @@ import Sprites from '../components/Sprites';
 
 const inter = Inter({ subsets: ['latin'] });
 
-import { timeToPercentage, comparePercentages, compareSequences } from '../includes/functions';
+import {
+    timeToPercentage,
+    comparePercentages,
+    compareSequences
+} from '../includes/functions';
 
 import Nav from '../components/Nav';
 
@@ -61,19 +65,47 @@ const sequences = [
 let getTimes: any = []; // I want to save in Array getTimes lapses between key presses in miliseconds
 let lastGetTime = 0; // I will need last time for click event
 
+/*
+let longestSquenceLength = 0;
+sequences
+    .map((thisArray) => thisArray.sequence) // array with each sequence inside sequences
+    .forEach(function (thisSequence) {
+        if (thisSequence.length > longestSquenceLength) {
+            longestSquenceLength = thisSequence.length;
+        }
+    });
+console.log('longestSquenceLength', longestSquenceLength);
+*/
+function longestArrayLength(array: any) {
+    let longestSquenceLength = 0;
+    array // array with each sequence inside sequences
+        .forEach(function (thisSequence: any) {
+            if (thisSequence.length > longestSquenceLength) {
+                longestSquenceLength = thisSequence.length;
+            }
+        });
+    return longestSquenceLength;
+}
+/*
+console.log(sequences.map((thisArray) => thisArray.sequence));
+console.log(
+    longestSquenceLength__(sequences.map((thisArray) => thisArray.sequence))
+);
+*/
+let longestSquenceLength = longestArrayLength(
+    sequences.map((thisArray) => thisArray.sequence)
+);
+console.log(longestSquenceLength);
 export default function Home() {
-
     const [mode, setMode] = useState('watching');
-
 
     const [sprites, setSprites] = useState<
         { clientX: string; clientY: string }[]
     >([]);
 
     const handleClick = (event: any) => {
-
         console.log('mode', mode);
-        
+
         //console.log(event);
         const getTime = new Date().getTime(); // new getTime value
         if (lastGetTime) {
@@ -81,13 +113,20 @@ export default function Home() {
         }
         lastGetTime = getTime; // on first click do nothing but save new getTime value
         //console.log('getTimes', getTimes);
-
+        //console.log('getTimes.length', getTimes.length);
+        //console.log('longestSquenceLength', longestSquenceLength);
+        //console.log('getTimes', getTimes);
+        //console.log('getTimes 2', getTimes.slice(getTimes.length - longestSquenceLength));
         const compareSequencesResult = compareSequences({
             sequences: sequences,
-            getTimes: getTimes
+            getTimes: getTimes.slice(
+                getTimes.length > longestSquenceLength && // if getTimes less than longestSquenceLength then take full array
+                    getTimes.length - longestSquenceLength // ... otherwise get only the longest possible part of the sequences array
+            )
         });
 
-        if(compareSequencesResult) console.log('compareSequencesResult', compareSequencesResult);
+        if (compareSequencesResult)
+            console.log('compareSequencesResult', compareSequencesResult);
 
         setSprites([
             ...sprites,
@@ -99,7 +138,6 @@ export default function Home() {
         event.stopPropagation();
         console.log('recording');
         setMode('recording');
-        
     };
 
     return (
